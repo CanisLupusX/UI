@@ -559,7 +559,7 @@ function Library:Create(options)
 					KeySystem["a9"]["TextColor3"] = Color3.fromRGB(205, 205, 205)
 					KeySystem["a9"]["AnchorPoint"] = Vector2.new(0.5, 0.5)
 					KeySystem["a9"]["Size"] = UDim2.new(0.949999988079071, 0, 0.800000011920929, 0)
-					KeySystem["a9"]["Text"] = [[Note: Use script at your own risk]]
+					KeySystem["a9"]["Text"] = [[Note: use at your own risk]]
 					KeySystem["a9"]["Font"] = Enum.Font.Gotham
 					KeySystem["a9"]["BackgroundTransparency"] = 1
 					KeySystem["a9"]["Position"] = UDim2.new(0.5, 0, 0.5, 0)
@@ -2380,9 +2380,11 @@ function Library:Create(options)
 				end
 				
 				do
-					for i, v in options.Items do
-						Dropdown:AddItem(v)
-					end
+					task.spawn(function()
+						for i, v in pairs(options.Items) do
+							Dropdown:AddItem(v)
+						end
+					end)
 				end
 
 				task.spawn(function()
@@ -2662,6 +2664,10 @@ function Library:Create(options)
 	
 	-- Toggle Handler
 	function Gui:Toggled(bool)
+		if not Library.Loaded then
+			return
+		end
+		
 		Gui.TweeningToggle = true
 		if (bool == nil) then
 			if Gui["2"].Visible then
@@ -2702,7 +2708,7 @@ function Library:Create(options)
 		Gui.TweeningToggle = false
 	end
 	
-	function Gui:TaskBarOnly(bool)
+	function Gui:TaskBarOnly(bool)		
 		if bool then
 			Library:Tween(Gui["18"], {
 				Length = 0.3,
